@@ -11,7 +11,7 @@ export class Cart extends Document {
   @Prop({ required: true })
   userId: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop()
   products: Products[];
 
   @Prop()
