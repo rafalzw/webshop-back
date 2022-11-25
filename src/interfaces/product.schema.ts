@@ -23,6 +23,12 @@ export class Product extends Document {
 
   @Prop({ required: true })
   price: number;
+
+  @Prop()
+  createdAt: Date;
+
+  @Prop()
+  updatedAt: Date;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
