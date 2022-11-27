@@ -98,4 +98,19 @@ export class AuthService {
       return res.json({ error: e.message });
     }
   }
+
+  async logout(user: UserDocument, res: Response) {
+    try {
+      const foundUser = await this.userModel.findOne({ _id: user.id });
+      foundUser.currentTokenId = null;
+      await foundUser.save();
+      res.clearCookie('jwt', {
+        secure: true,
+        httpOnly: true,
+      });
+      return res.json({ isSuccess: true });
+    } catch (e) {
+      return res.json({ error: e.message });
+    }
+  }
 }
