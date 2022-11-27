@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Response } from 'express';
 import { User, UserDocument } from 'src/interfaces/user.schema';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/auth-register.dto';
 import { RegisterUserResponse, UserInterface } from '../interfaces/user';
+import { AuthLoginDto } from './dto/auth-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,5 +38,24 @@ export class AuthService {
       isSuccess: true,
       data: this.filter(newUser),
     };
+  }
+
+  async login(req: AuthLoginDto, res: Response): Promise<any> {
+    try {
+      const user = await this.userModel.findOne({
+        username: req.username,
+      });
+
+      if (user && (await bcrypt.compare(req.password, user.password))) {
+        return res.json({
+          isSuccess: true,
+          data: this.filter(user),
+        });
+      }
+
+      return res.json({ isSuccess: false, error: 'Invalid login data!' });
+    } catch (e) {
+      return res.json({ error: e.message });
+    }
   }
 }
