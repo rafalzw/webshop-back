@@ -7,6 +7,10 @@ import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/auth-register.dto';
 import { RegisterUserResponse, UserInterface } from '../interfaces/user';
 import { AuthLoginDto } from './dto/auth-login.dto';
+import { JwtPayload } from './jwt.strategy';
+import { sign } from 'jsonwebtoken';
+import { config } from '../config/config';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +44,36 @@ export class AuthService {
     };
   }
 
+  protected createToken(currentTokenId: string): {
+    accessToken: string;
+    expiresIn: number;
+  } {
+    const payload: JwtPayload = { id: currentTokenId };
+    const expiresIn = 60 * 60 * 24;
+    const accessToken = sign(payload, config.jwtSecret, {
+      expiresIn,
+    });
+    return {
+      accessToken,
+      expiresIn,
+    };
+  }
+
+  protected async generateToken(user: UserDocument): Promise<string> {
+    let token;
+    let userWithThisToken = null;
+    do {
+      token = uuid();
+      userWithThisToken = await this.userModel.findOne({
+        currentTokenId: token,
+      });
+    } while (!!userWithThisToken);
+    user.currentTokenId = token;
+    await user.save();
+
+    return token;
+  }
+
   async login(req: AuthLoginDto, res: Response): Promise<any> {
     try {
       const user = await this.userModel.findOne({
@@ -47,10 +81,16 @@ export class AuthService {
       });
 
       if (user && (await bcrypt.compare(req.password, user.password))) {
-        return res.json({
-          isSuccess: true,
-          data: this.filter(user),
-        });
+        const token = this.createToken(await this.generateToken(user));
+        return res
+          .cookie('jwt', token.accessToken, {
+            secure: true,
+            httpOnly: true,
+          })
+          .json({
+            isSuccess: true,
+            data: this.filter(user),
+          });
       }
 
       return res.json({ isSuccess: false, error: 'Invalid login data!' });
