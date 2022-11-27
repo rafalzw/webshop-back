@@ -13,7 +13,6 @@ export class UsersService {
     private userModel: Model<UserDocument>,
   ) {}
 
-  @Put()
   async update(
     user: UserInterface,
     data: UpdateUserDto,
@@ -31,6 +30,13 @@ export class UsersService {
       ...data,
     });
 
+    return {
+      isSuccess: true,
+    };
+  }
+
+  async delete(id: string) {
+    await this.userModel.findByIdAndRemove(id);
     return {
       isSuccess: true,
     };
