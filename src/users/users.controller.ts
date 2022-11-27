@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -13,6 +14,7 @@ import { UserObj } from 'src/decorators/user-obj.decorator';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update.dto';
 import {
+  GetAllUsersResponse,
   GetOneUserResponse,
   UpdateUserResponse,
   UserInterface,
@@ -47,5 +49,12 @@ export class UsersController {
   @Role(UserRole.ADMIN)
   getOne(@Param('id') id: string): Promise<GetOneUserResponse> {
     return this.usersService.getOne(id);
+  }
+
+  @Get('/')
+  @UseGuards(AuthGuard('jwt'), UserRoleGuard)
+  @Role(UserRole.ADMIN)
+  getAll(@Query('latest') latest: string): Promise<GetAllUsersResponse> {
+    return this.usersService.getAll(latest);
   }
 }

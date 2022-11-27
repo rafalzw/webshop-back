@@ -1,9 +1,10 @@
-import { Injectable, Put } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../interfaces/user.schema';
 import { Model } from 'mongoose';
 import { UpdateUserDto } from './dto/update.dto';
 import {
+  GetAllUsersResponse,
   GetOneUserResponse,
   UpdateUserResponse,
   UserInterface,
@@ -54,5 +55,12 @@ export class UsersService {
   async getOne(id: string): Promise<GetOneUserResponse> {
     const user = await this.userModel.findById(id);
     return this.filter(user);
+  }
+
+  async getAll(latest): Promise<GetAllUsersResponse> {
+    const users = latest
+      ? await this.userModel.find().sort({ _id: -1 }).limit(5)
+      : await this.userModel.find();
+    return users.map((user) => this.filter(user));
   }
 }

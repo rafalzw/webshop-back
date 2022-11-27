@@ -21,3 +21,5 @@ export type UpdateUserResponse = {
 };
 
 export type GetOneUserResponse = UserInterface;
+
+export type GetAllUsersResponse = UserInterface[];
