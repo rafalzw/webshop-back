@@ -10,7 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { RegisterDto } from './dto/auth-register.dto';
-import { RegisterUserResponse, UserInterface } from '../interfaces/user';
+import { RegisterUserResponse } from '../interfaces/user';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserObj } from 'src/decorators/user-obj.decorator';

@@ -10,3 +10,7 @@ export type RegisterUserResponse = {
   isSuccess: boolean;
   data: UserInterface;
 };
+
+export type UpdateUserResponse = {
+  isSuccess: boolean;
+};
