@@ -39,4 +39,24 @@ export class ProductsService {
     const product = await this.productModel.findById(id);
     return product;
   }
+
+  async findAll(newest: string, category: string): Promise<Product[]> {
+    let products;
+    if (newest) {
+      products = await this.productModel
+        .find()
+        .sort({ createdAt: -1 })
+        .limit(5);
+    } else if (category) {
+      products = await this.productModel.find({
+        categories: {
+          $in: [category],
+        },
+      });
+    } else {
+      products = await this.productModel.find();
+    }
+
+    return products;
+  }
 }

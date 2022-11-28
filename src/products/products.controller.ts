@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
@@ -55,5 +56,13 @@ export class ProductsController {
   @Get('/:id')
   findOne(@Param('id') id: string): Promise<Product> {
     return this.productsService.findOne(id);
+  }
+
+  @Get('/')
+  findAll(
+    @Query('newest') newest: string,
+    @Query('category') category: string,
+  ): Promise<Product[]> {
+    return this.productsService.findAll(newest, category);
   }
 }
