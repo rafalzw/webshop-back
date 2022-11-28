@@ -1,9 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { UserRole } from './user';
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class User {
   @Prop({ required: true, unique: true })
   username: string;
@@ -23,14 +26,8 @@ export class User {
   @Prop({ default: null })
   currentTokenId: string | null;
 
-  @Prop({ default: false })
-  isAdmin: boolean;
-
-  @Prop()
-  createdAt: Date;
-
-  @Prop()
-  updatedAt: Date;
+  @Prop({ default: 'customer' })
+  role: UserRole;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
