@@ -29,4 +29,8 @@ export class ProductsService {
     );
     return updatedProduct;
   }
+
+  async remove(id: string): Promise<UpdateProductResponse> {
+    return await this.productModel.findByIdAndDelete(id);
+  }
 }

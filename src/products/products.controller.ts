@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Inject,
   Param,
   Post,
@@ -39,5 +40,12 @@ export class ProductsController {
     @Body() product: ProductDto,
   ): Promise<UpdateProductResponse> {
     return this.productsService.update(id, product);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard('jwt'), UserRoleGuard)
+  @Role(UserRole.ADMIN)
+  remove(@Param('id') id: string): Promise<UpdateProductResponse> {
+    return this.productsService.remove(id);
   }
 }
