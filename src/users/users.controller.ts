@@ -22,6 +22,7 @@ import {
 } from 'src/interfaces/user';
 import { UserRoleGuard } from '../guards/user-role.guard';
 import { Role } from '../decorators/user-role.decorator';
+import { PipelineStage } from 'mongoose';
 
 @Controller('users')
 export class UsersController {
@@ -44,6 +45,12 @@ export class UsersController {
     return this.usersService.delete(user.id);
   }
 
+  @Get('/stats')
+  @UseGuards(AuthGuard('jwt'), UserRoleGuard)
+  @Role(UserRole.ADMIN)
+  getStats(): Promise<PipelineStage[]> {
+    return this.usersService.getStats();
+  }
   @Get('/:id')
   @UseGuards(AuthGuard('jwt'), UserRoleGuard)
   @Role(UserRole.ADMIN)

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../interfaces/user.schema';
-import { Model } from 'mongoose';
+import { Model, PipelineStage } from 'mongoose';
 import { UpdateUserDto } from './dto/update.dto';
 import {
   GetAllUsersResponse,
@@ -62,5 +62,23 @@ export class UsersService {
       ? await this.userModel.find().sort({ _id: -1 }).limit(5)
       : await this.userModel.find();
     return users.map((user) => this.filter(user));
+  }
+
+  async getStats(): Promise<PipelineStage[]> {
+    const date = new Date();
+    const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+
+    const data = await this.userModel.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      { $project: { month: { $month: '$createdAt' } } },
+      {
+        $group: {
+          _id: '$month',
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+
+    return data;
   }
 }
