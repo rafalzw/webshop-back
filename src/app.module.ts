@@ -14,7 +14,6 @@ import { ProductsModule } from './products/products.module';
     UsersModule,
     ProductsModule,
   ],
-
   controllers: [AppController],
   providers: [AppService],
 })
