@@ -13,3 +13,4 @@ export interface ProductInterface {
 
 export type AddProductResponse = ProductInterface;
 export type UpdateProductResponse = ProductInterface;
+export type DeleteProductResponse = ProductInterface;

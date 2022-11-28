@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { Product, ProductDocument } from '../interfaces/product.schema';
 import {
   AddProductResponse,
+  DeleteProductResponse,
   UpdateProductResponse,
 } from '../interfaces/product';
 
@@ -21,7 +22,7 @@ export class ProductsService {
   async update(
     id: string,
     product: ProductDto,
-  ): Promise<UpdateProductResponse> {
+  ): Promise<DeleteProductResponse> {
     const updatedProduct = await this.productModel.findByIdAndUpdate(
       id,
       product,
@@ -32,5 +33,10 @@ export class ProductsService {
 
   async remove(id: string): Promise<UpdateProductResponse> {
     return await this.productModel.findByIdAndDelete(id);
+  }
+
+  async findOne(id: string): Promise<Product> {
+    const product = await this.productModel.findById(id);
+    return product;
   }
 }

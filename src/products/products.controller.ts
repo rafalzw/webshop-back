@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Inject,
   Param,
   Post,
@@ -16,8 +17,10 @@ import { UserRole } from '../interfaces/user';
 import { ProductDto } from './dto/product.dto';
 import {
   AddProductResponse,
+  DeleteProductResponse,
   UpdateProductResponse,
 } from '../interfaces/product';
+import { Product } from '../interfaces/product.schema';
 
 @Controller('products')
 export class ProductsController {
@@ -45,7 +48,12 @@ export class ProductsController {
   @Delete('/:id')
   @UseGuards(AuthGuard('jwt'), UserRoleGuard)
   @Role(UserRole.ADMIN)
-  remove(@Param('id') id: string): Promise<UpdateProductResponse> {
+  remove(@Param('id') id: string): Promise<DeleteProductResponse> {
     return this.productsService.remove(id);
+  }
+
+  @Get('/:id')
+  findOne(@Param('id') id: string): Promise<Product> {
+    return this.productsService.findOne(id);
   }
 }
