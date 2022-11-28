@@ -16,11 +16,6 @@ import { UserRoleGuard } from '../guards/user-role.guard';
 import { Role } from '../decorators/user-role.decorator';
 import { UserRole } from '../interfaces/user';
 import { ProductDto } from './dto/product.dto';
-import {
-  AddProductResponse,
-  DeleteProductResponse,
-  UpdateProductResponse,
-} from '../interfaces/product';
 import { Product } from '../interfaces/product.schema';
 
 @Controller('products')
@@ -32,7 +27,7 @@ export class ProductsController {
   @Post('/')
   @UseGuards(AuthGuard('jwt'), UserRoleGuard)
   @Role(UserRole.ADMIN)
-  add(@Body() product: ProductDto): Promise<AddProductResponse> {
+  add(@Body() product: ProductDto): Promise<Product> {
     return this.productsService.add(product);
   }
 
@@ -42,14 +37,14 @@ export class ProductsController {
   update(
     @Param('id') id: string,
     @Body() product: ProductDto,
-  ): Promise<UpdateProductResponse> {
+  ): Promise<Product> {
     return this.productsService.update(id, product);
   }
 
   @Delete('/:id')
   @UseGuards(AuthGuard('jwt'), UserRoleGuard)
   @Role(UserRole.ADMIN)
-  remove(@Param('id') id: string): Promise<DeleteProductResponse> {
+  remove(@Param('id') id: string): Promise<Product> {
     return this.productsService.remove(id);
   }
 
