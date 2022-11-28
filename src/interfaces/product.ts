@@ -7,6 +7,9 @@ export interface ProductInterface {
   size: string;
   color: string;
   price: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export type AddProductResponse = ProductInterface;
+export type UpdateProductResponse = ProductInterface;
