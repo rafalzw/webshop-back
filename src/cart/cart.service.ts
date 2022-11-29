@@ -32,4 +32,8 @@ export class CartService {
     const cart = await this.cartModel.findOne({ userId: id });
     return cart;
   }
+
+  async getAllCarts(): Promise<Cart[]> {
+    return await this.cartModel.find();
+  }
 }
