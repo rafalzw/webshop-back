@@ -1,10 +1,21 @@
-import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserObj } from '../decorators/user-obj.decorator';
-import { UserInterface } from '../interfaces/user';
+import { UserInterface, UserRole } from '../interfaces/user';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { Order } from 'src/interfaces/order.schema';
+import { UserRoleGuard } from '../guards/user-role.guard';
+import { Role } from '../decorators/user-role.decorator';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -19,5 +30,15 @@ export class OrdersController {
     @Body() body: CreateOrderDto,
   ): Promise<Order> {
     return this.ordersService.create(user.id, body);
+  }
+
+  @Put('/:id')
+  @UseGuards(AuthGuard('jwt'), UserRoleGuard)
+  @Role(UserRole.ADMIN)
+  update(
+    @Param('id') id: string,
+    @Body() body: UpdateOrderDto,
+  ): Promise<Order> {
+    return this.ordersService.update(id, body);
   }
 }

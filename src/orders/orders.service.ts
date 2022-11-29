@@ -21,4 +21,20 @@ export class OrdersService {
     });
     return newOrder;
   }
+
+  async update(id: string, body: CreateOrderDto): Promise<Order> {
+    const { products, amount, address } = body;
+    const updatedOrder = await this.orderModel.findByIdAndUpdate(
+      id,
+      {
+        products,
+        amount,
+        address,
+      },
+      {
+        new: true,
+      },
+    );
+    return updatedOrder;
+  }
 }
