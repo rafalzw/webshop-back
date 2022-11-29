@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, HydratedDocument } from 'mongoose';
 
 type Products = {
   productId: string;
@@ -18,8 +18,12 @@ enum Status {
   RECEIVED = 'received',
 }
 
-@Schema()
-export class Order extends Document {
+export type OrderDocument = HydratedDocument<Order>;
+
+@Schema({
+  timestamps: true,
+})
+export class Order {
   @Prop({ required: true })
   userId: string;
 
@@ -29,14 +33,11 @@ export class Order extends Document {
   @Prop({ required: true })
   amount: number;
 
-  @Prop({ required: true })
+  @Prop({ type: Object, required: true })
   address: Address;
 
-  @Prop({ required: true, default: 'pending' })
+  @Prop({ required: true, default: Status.PENDING })
   status: Status;
-
-  @Prop()
-  createdAt: Date;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
