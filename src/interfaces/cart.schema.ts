@@ -1,21 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
+import { CartInterface, Products } from './cart';
 
-type Products = {
-  productId: string;
-  quantity: number;
-};
+export type CartDocument = HydratedDocument<Cart>;
 
-@Schema()
-export class Cart extends Document {
+@Schema({
+  timestamps: true,
+})
+export class Cart implements CartInterface {
   @Prop({ required: true })
   userId: string;
 
   @Prop()
   products: Products[];
-
-  @Prop()
-  createdAt: Date;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
