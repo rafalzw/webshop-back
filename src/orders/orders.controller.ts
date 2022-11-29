@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Inject,
   Param,
   Post,
@@ -48,5 +49,11 @@ export class OrdersController {
   @Role(UserRole.ADMIN)
   remove(@Param('id') id: string): Promise<Order> {
     return this.ordersService.remove(id);
+  }
+
+  @Get('/')
+  @UseGuards(AuthGuard('jwt'))
+  getUserOrders(@UserObj() user: UserInterface): Promise<Order[]> {
+    return this.ordersService.getUserOrders(user.id);
   }
 }

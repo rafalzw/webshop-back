@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Order, OrderDocument } from 'src/interfaces/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { Cart } from '../interfaces/cart.schema';
 
 @Injectable()
 export class OrdersService {
@@ -41,5 +40,10 @@ export class OrdersService {
 
   async remove(id: string): Promise<Order> {
     return await this.orderModel.findByIdAndDelete(id);
+  }
+
+  async getUserOrders(id: string): Promise<Order[]> {
+    const orders = await this.orderModel.find({ userId: id });
+    return orders;
   }
 }
