@@ -15,4 +15,11 @@ export class CartService {
     const newCart = await this.cartModel.create({ userId: id, products: body });
     return newCart;
   }
+
+  async update(id: string, body: CreateCartDto): Promise<Cart> {
+    const updatedCart = await this.cartModel.findByIdAndUpdate(id, body, {
+      new: true,
+    });
+    return updatedCart;
+  }
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserInterface } from '../interfaces/user';
@@ -17,5 +25,11 @@ export class CartController {
     @Body() body: CreateCartDto,
   ): Promise<Cart> {
     return this.cartService.create(user.id, body);
+  }
+
+  @Put('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  update(@Body() body: CreateCartDto, @Param('id') id: string): Promise<Cart> {
+    return this.cartService.update(id, body);
   }
 }
