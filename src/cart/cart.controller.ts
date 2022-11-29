@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Inject,
   Param,
   Post,
@@ -39,5 +40,11 @@ export class CartController {
   @UseGuards(AuthGuard('jwt'))
   remove(@Param('id') id: string): Promise<Cart> {
     return this.cartService.remove(id);
+  }
+
+  @Get('/')
+  @UseGuards(AuthGuard('jwt'))
+  getCart(@UserObj() user: UserInterface): Promise<Cart> {
+    return this.cartService.getCart(user.id);
   }
 }
