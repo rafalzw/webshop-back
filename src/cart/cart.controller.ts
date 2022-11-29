@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Inject,
   Param,
   Post,
@@ -13,6 +14,7 @@ import { UserInterface } from '../interfaces/user';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UserObj } from '../decorators/user-obj.decorator';
 import { Cart } from '../interfaces/cart.schema';
+import { UpdateCartDto } from './dto/update-cart.dto';
 
 @Controller('cart')
 export class CartController {
@@ -29,7 +31,13 @@ export class CartController {
 
   @Put('/:id')
   @UseGuards(AuthGuard('jwt'))
-  update(@Body() body: CreateCartDto, @Param('id') id: string): Promise<Cart> {
+  update(@Body() body: UpdateCartDto, @Param('id') id: string): Promise<Cart> {
     return this.cartService.update(id, body);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  remove(@Param('id') id: string): Promise<Cart> {
+    return this.cartService.remove(id);
   }
 }

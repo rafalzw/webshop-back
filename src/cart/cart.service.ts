@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Cart, CartDocument } from '../interfaces/cart.schema';
 import { CreateCartDto } from './dto/create-cart.dto';
+import { UpdateCartDto } from './dto/update-cart.dto';
 
 @Injectable()
 export class CartService {
@@ -16,10 +17,14 @@ export class CartService {
     return newCart;
   }
 
-  async update(id: string, body: CreateCartDto): Promise<Cart> {
+  async update(id: string, body: UpdateCartDto): Promise<Cart> {
     const updatedCart = await this.cartModel.findByIdAndUpdate(id, body, {
       new: true,
     });
     return updatedCart;
+  }
+
+  async remove(id: string): Promise<Cart> {
+    return await this.cartModel.findByIdAndDelete(id);
   }
 }
