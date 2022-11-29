@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Inject,
   Param,
   Post,
@@ -40,5 +41,12 @@ export class OrdersController {
     @Body() body: UpdateOrderDto,
   ): Promise<Order> {
     return this.ordersService.update(id, body);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard('jwt'), UserRoleGuard)
+  @Role(UserRole.ADMIN)
+  remove(@Param('id') id: string): Promise<Order> {
+    return this.ordersService.remove(id);
   }
 }

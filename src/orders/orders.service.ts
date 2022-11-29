@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Order, OrderDocument } from 'src/interfaces/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { Cart } from '../interfaces/cart.schema';
 
 @Injectable()
 export class OrdersService {
@@ -36,5 +37,9 @@ export class OrdersService {
       },
     );
     return updatedOrder;
+  }
+
+  async remove(id: string): Promise<Order> {
+    return await this.orderModel.findByIdAndDelete(id);
   }
 }
