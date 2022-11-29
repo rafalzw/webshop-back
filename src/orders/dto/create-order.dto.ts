@@ -1,8 +1,8 @@
 import { Address, OrderInterface, Products } from '../../interfaces/order';
 
-export class AddOrderDto implements OrderInterface {
+export class CreateOrderDto implements OrderInterface {
   address: Address;
   amount: number;
   products: Products[];
-  userId: string;
+  userId?: string;
 }

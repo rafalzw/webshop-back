@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 type Products = {
   productId: string;
@@ -27,13 +27,13 @@ export class Order {
   @Prop({ required: true })
   userId: string;
 
-  @Prop()
+  @Prop({ type: Array })
   products: Products[];
 
-  @Prop({ required: true })
+  @Prop()
   amount: number;
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: Object })
   address: Address;
 
   @Prop({ required: true, default: Status.PENDING })
