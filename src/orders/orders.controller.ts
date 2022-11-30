@@ -56,4 +56,11 @@ export class OrdersController {
   getUserOrders(@UserObj() user: UserInterface): Promise<Order[]> {
     return this.ordersService.getUserOrders(user.id);
   }
+
+  @Get('/all')
+  @UseGuards(AuthGuard('jwt'), UserRoleGuard)
+  @Role(UserRole.ADMIN)
+  getAllOrders(): Promise<Order[]> {
+    return this.ordersService.getAllOrders();
+  }
 }

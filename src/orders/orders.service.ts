@@ -46,4 +46,9 @@ export class OrdersService {
     const orders = await this.orderModel.find({ userId: id });
     return orders;
   }
+
+  async getAllOrders(): Promise<Order[]> {
+    const orders = await this.orderModel.find();
+    return orders;
+  }
 }
