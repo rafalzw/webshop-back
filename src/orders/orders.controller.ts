@@ -18,6 +18,7 @@ import { Order } from 'src/interfaces/order.schema';
 import { UserRoleGuard } from '../guards/user-role.guard';
 import { Role } from '../decorators/user-role.decorator';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { PipelineStage } from 'mongoose';
 
 @Controller('orders')
 export class OrdersController {
@@ -62,5 +63,12 @@ export class OrdersController {
   @Role(UserRole.ADMIN)
   getAllOrders(): Promise<Order[]> {
     return this.ordersService.getAllOrders();
+  }
+
+  @Get('/stats')
+  @UseGuards(AuthGuard('jwt'), UserRoleGuard)
+  @Role(UserRole.ADMIN)
+  getStats(): Promise<PipelineStage[]> {
+    return this.ordersService.getStats();
   }
 }

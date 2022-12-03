@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PipelineStage } from 'mongoose';
 import { Order, OrderDocument } from 'src/interfaces/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
 
@@ -50,5 +50,26 @@ export class OrdersService {
   async getAllOrders(): Promise<Order[]> {
     const orders = await this.orderModel.find();
     return orders;
+  }
+
+  async getStats(): Promise<PipelineStage[]> {
+    const date = new Date();
+    const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
+    const previousMonth = new Date(
+      new Date().setMonth(lastMonth.getMonth() - 1),
+    );
+
+    const stats = await this.orderModel.aggregate([
+      { $match: { createdAt: { $gte: previousMonth } } },
+      { $project: { month: { $month: '$createdAt' }, sales: '$amount' } },
+      {
+        $group: {
+          _id: '$month',
+          total: { $sum: '$sales' },
+        },
+      },
+    ]);
+
+    return stats;
   }
 }
