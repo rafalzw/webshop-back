@@ -17,4 +17,18 @@ export class StripeService {
       email,
     });
   }
+
+  public async charge(
+    amount: number,
+    paymentMethodId: string,
+    customerId: string,
+  ) {
+    return this.stripe.paymentIntents.create({
+      amount,
+      customer: customerId,
+      payment_method: paymentMethodId,
+      currency: config.stripeCurrency,
+      confirm: true,
+    });
+  }
 }
