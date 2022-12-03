@@ -4,6 +4,7 @@ export interface UserInterface {
   lastName: string;
   username: string;
   email: string;
+  stripeCustomerId?: string;
 }
 
 export enum UserRole {

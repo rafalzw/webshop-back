@@ -11,12 +11,14 @@ import { JwtPayload } from './jwt.strategy';
 import { sign } from 'jsonwebtoken';
 import { config } from '../config/config';
 import { v4 as uuid } from 'uuid';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<UserDocument>,
+    private stripeService: StripeService,
   ) {}
 
   filter(user): UserInterface {
@@ -27,6 +29,11 @@ export class AuthService {
   async register(user: RegisterDto): Promise<RegisterUserResponse> {
     const { username, firstName, lastName, email, password } = user;
 
+    const stripeCustomer = await this.stripeService.createCustomer(
+      username,
+      email,
+    );
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -36,6 +43,7 @@ export class AuthService {
       lastName,
       email,
       password: hashedPassword,
+      stripeCustomerId: stripeCustomer.id,
     });
     await newUser.save();
     return {
