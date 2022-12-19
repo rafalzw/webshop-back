@@ -91,19 +91,17 @@ export class AuthService {
       if (user && (await bcrypt.compare(req.password, user.password))) {
         const token = this.createToken(await this.generateToken(user));
         return res
+          .status(200)
           .cookie('jwt', token.accessToken, {
             secure: true,
             httpOnly: true,
           })
-          .json({
-            isSuccess: true,
-            data: this.filter(user),
-          });
+          .json(this.filter(user));
       }
 
-      return res.json({ isSuccess: false, error: 'Invalid login data!' });
+      return res.status(401).json({ error: 'Invalid login data!' });
     } catch (e) {
-      return res.json({ error: e.message });
+      return res.status(500).json({ error: e.message });
     }
   }
 
@@ -116,9 +114,9 @@ export class AuthService {
         secure: true,
         httpOnly: true,
       });
-      return res.json({ isSuccess: true });
+      return res.status(200).json({ isSuccess: true });
     } catch (e) {
-      return res.json({ error: e.message });
+      return res.status(500).json({ error: e.message });
     }
   }
 }
