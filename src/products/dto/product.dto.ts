@@ -1,6 +1,4 @@
-import { ProductInterface } from '../../interfaces/product';
-
-export class ProductDto implements ProductInterface {
+export class ProductDto {
   categories: string[];
   color: string;
   desc: string;

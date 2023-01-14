@@ -1,4 +1,4 @@
-export type Products = {
+export type OrderedProducts = {
   productId: string;
   quantity: number;
 };
@@ -12,7 +12,7 @@ export type Address = {
 
 export interface OrderInterface {
   userId?: string;
-  products: Products[];
+  products: OrderedProducts[];
   amount: number;
   address: Address;
 }

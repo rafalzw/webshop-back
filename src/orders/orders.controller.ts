@@ -32,7 +32,7 @@ export class OrdersController {
     @UserObj() user: UserInterface,
     @Body() body: CreateOrderDto,
   ): Promise<Order> {
-    return this.ordersService.create(user.id, body);
+    return this.ordersService.create(body, user);
   }
 
   @Put('/:id')

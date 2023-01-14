@@ -10,7 +10,7 @@ export class Product extends Document {
   @Prop({ required: true, unique: true })
   title: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   desc: string;
 
   @Prop({ required: true })
@@ -19,14 +19,17 @@ export class Product extends Document {
   @Prop({ type: Array })
   categories: string[];
 
-  @Prop()
-  size: string;
+  @Prop({ type: Array })
+  size: string[];
 
-  @Prop()
-  color: string;
+  @Prop({ type: Array })
+  color: string[];
 
   @Prop({ required: true })
   price: number;
+
+  @Prop({ type: Boolean, default: true })
+  inStock: boolean;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

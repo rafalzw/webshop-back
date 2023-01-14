@@ -1,8 +1,12 @@
-import { Address, OrderInterface, Products } from '../../interfaces/order';
+import {
+  Address,
+  OrderInterface,
+  OrderedProducts,
+} from '../../interfaces/order';
 
 export class UpdateOrderDto implements OrderInterface {
   address: Address;
   amount: number;
-  products: Products[];
+  products: OrderedProducts[];
   userId?: string;
 }

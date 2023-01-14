@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, PipelineStage } from 'mongoose';
 import { Order, OrderDocument } from 'src/interfaces/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { UserInterface } from '../interfaces';
 
 @Injectable()
 export class OrdersService {
@@ -11,10 +12,11 @@ export class OrdersService {
     private orderModel: Model<OrderDocument>,
   ) {}
 
-  async create(id: string, body: CreateOrderDto): Promise<Order> {
+  async create(body: CreateOrderDto, user: UserInterface): Promise<Order> {
     const { products, amount, address } = body;
+    console.log(products);
     const newOrder = await this.orderModel.create({
-      userId: id,
+      userId: user.id,
       products,
       amount,
       address,
