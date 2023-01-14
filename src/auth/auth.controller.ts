@@ -35,4 +35,10 @@ export class AuthController {
   async logout(@UserObj() user: UserDocument, @Res() res: Response) {
     return this.authService.logout(user, res);
   }
+
+  @Get('/check')
+  @UseGuards(AuthGuard('jwt'))
+  async check(@UserObj() user: UserDocument) {
+    return this.authService.check(user);
+  }
 }

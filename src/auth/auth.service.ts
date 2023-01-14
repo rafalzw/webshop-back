@@ -119,4 +119,8 @@ export class AuthService {
       return res.status(500).json({ error: e.message });
     }
   }
+
+  check(user: UserDocument) {
+    return this.filter(user);
+  }
 }
