@@ -42,7 +42,7 @@ export class UsersController {
   @Delete('/')
   @UseGuards(AuthGuard('jwt'))
   delete(@UserObj() user: UserInterface) {
-    return this.usersService.delete(user.id);
+    return this.usersService.delete(user._id);
   }
 
   @Get('/stats')
@@ -52,8 +52,7 @@ export class UsersController {
     return this.usersService.getStats();
   }
   @Get('/:id')
-  @UseGuards(AuthGuard('jwt'), UserRoleGuard)
-  @Role(UserRole.ADMIN)
+  @UseGuards(AuthGuard('jwt'))
   getOne(@Param('id') id: string): Promise<GetOneUserResponse> {
     return this.usersService.getOne(id);
   }

@@ -14,9 +14,8 @@ export class OrdersService {
 
   async create(body: CreateOrderDto, user: UserInterface): Promise<Order> {
     const { products, amount, address } = body;
-    console.log(products);
     const newOrder = await this.orderModel.create({
-      userId: user.id,
+      userId: user._id,
       products,
       amount,
       address,

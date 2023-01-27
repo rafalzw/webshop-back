@@ -55,7 +55,7 @@ export class OrdersController {
   @Get('/')
   @UseGuards(AuthGuard('jwt'))
   getUserOrders(@UserObj() user: UserInterface): Promise<Order[]> {
-    return this.ordersService.getUserOrders(user.id);
+    return this.ordersService.getUserOrders(user._id);
   }
 
   @Get('/all')

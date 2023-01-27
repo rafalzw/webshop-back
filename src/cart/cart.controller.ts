@@ -29,7 +29,7 @@ export class CartController {
     @UserObj() user: UserInterface,
     @Body() body: CreateCartDto,
   ): Promise<Cart> {
-    return this.cartService.create(user.id, body);
+    return this.cartService.create(user._id, body);
   }
 
   @Put('/:id')
@@ -47,7 +47,7 @@ export class CartController {
   @Get('/')
   @UseGuards(AuthGuard('jwt'))
   getCart(@UserObj() user: UserInterface): Promise<Cart> {
-    return this.cartService.getCart(user.id);
+    return this.cartService.getCart(user._id);
   }
 
   @Get('/all')

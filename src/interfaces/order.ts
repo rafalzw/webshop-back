@@ -11,8 +11,10 @@ export type Address = {
 };
 
 export interface OrderInterface {
+  _id?: string;
   userId?: string;
   products: OrderedProducts[];
   amount: number;
   address: Address;
+  createdAt?: string;
 }

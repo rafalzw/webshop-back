@@ -30,15 +30,15 @@ export class UsersService {
     if (data.password) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(data.password, salt);
-      await this.userModel.findByIdAndUpdate(user.id, {
+      await this.userModel.findByIdAndUpdate(user._id, {
         ...data,
         password: hashedPassword,
       });
+    } else {
+      await this.userModel.findByIdAndUpdate(user._id, {
+        ...data,
+      });
     }
-
-    await this.userModel.findByIdAndUpdate(user.id, {
-      ...data,
-    });
 
     return {
       isSuccess: true,
