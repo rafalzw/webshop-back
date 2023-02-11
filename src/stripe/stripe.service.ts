@@ -26,7 +26,6 @@ export class StripeService {
           currency: 'pln',
           product_data: {
             name: item.title,
-            images: [item.img],
             description: item.title,
             metadata: {
               id: item._id,
